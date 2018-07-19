@@ -33,7 +33,7 @@ body {
 	font-family: 'Open Sans', sans-serif;
 }
 
-.head {
+.header {
 	text-align: center;
 	padding: 13px;
 	background: linear-gradient(to right, #FFFFFF 0%, #F9F9F9 50%, #FFFFFF 100%);
