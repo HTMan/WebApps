@@ -37,6 +37,7 @@ function init() {
 	randSpawn();
 	randSpawn();
 	drawArr();
+	pointsFi.innerHTML="Use WASD or Arrows<br>to shift numbers<br>";
 	addEventListener("keydown", gameFrame);
 }
 
