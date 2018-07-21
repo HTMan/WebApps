@@ -71,7 +71,7 @@ function drawArr() {
 				block.innerHTML=arr[i][j];
 				block.style.color=getColor(arr[i][j]);
 			}
-				else  block.innerHTML=' ';
+				else  block.innerHTML="<br>";
 			block = block.nextElementSibling;
 		}
 	pointsFi.innerHTML=totalPoints+"<br><br>";

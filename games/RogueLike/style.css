@@ -13,10 +13,14 @@ h1.title {
 	border-bottom: 1px solid #DDDDDD;
 }
 
-.field {
+p.field {
 	font-size: 18 px;
 	text-indent: 1.5em;
 	text-align: justify;
 	line-height: 1.5;
 	color: #555555;
+}
+
+div {
+	float:left;
 }

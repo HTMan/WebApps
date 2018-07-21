@@ -5,12 +5,8 @@
 }
 
 @keyframes animatedBackground {
-    0 {
-        background-position: 0 0
-    }
-    100% {
-        background-position: -600px 600px
-    }
+    0 { background-position: 0 0 }
+    100% { background-position: -600px 600px }
 }
 
 #bckg{
@@ -45,19 +41,20 @@ h1 {
 
 .list {
 	margin: 0 auto;
-	margin-bottom: 21px;
-	padding: 21px;
-	width: 857px; 
+	margin-bottom: 2%;
+	padding: 1%;
+	width: 60%; 
 	background-color: #FCFCFC;
 }
 
 a {
-	color: black;
+	color: black;	
 	text-decoration: none;
 }
 
 .block {
-	margin-bottom: 21px;
+	position: relative;
+	margin-bottom: 2%;
 	width: 100%;
 	min-height: 250px;
 	background-color: white;
@@ -70,16 +67,19 @@ a {
 }
 
 .block:active {
-	box-shadow: 0px 0px 0px 10px #FFFFFF;
+	box-shadow: 0px 0px 0px 10px rgba(255, 255, 255, 0);
 }
 
-
-.block > img {
+.block > div {
 	float: left;
 }
 
+div > img {
+	width: 100%;
+	height: auto;
+}
+
 .block > p {
-	float: right
 	display: block;
 	padding: 18px;
 	font-size: 18px;
@@ -97,5 +97,28 @@ a {
 	text-align: center;
 	background-color: white;
 	padding: 12px;
-	box-shadow: 0px -2px 3px #DDDDDD;
+	box-shadow: 0px -1px 3px #DDDDDD;
+}
+
+@media screen and (max-width: 1200px) {
+	.list {
+		width: 80%;
+	}
+}
+
+@media screen and (max-width: 650px) {
+	.block {
+		margin-bottom:5%;
+	}
+	.block > div {
+		border-bottom: 1px dashed #DEDEDE;
+		float: none;
+		padding-left:22%;
+	}
+	div > img {
+		width: 70%;
+	}
+	.footer {
+		display: none;
+	}
 }
