@@ -24,7 +24,6 @@ function init() {
 	block.className="block";
 	for( var i=0; i<BL_NUM; i++ ) {
 		var clone=block.cloneNode();
-		clone.id=i;
 		gameFi.appendChild(clone);
 	}
 	
@@ -64,7 +63,7 @@ function getColor(num) {
 }
 
 function drawArr() {
-	var block = document.getElementById("0");
+	var block = gameFi.firstElementChild;
 	
 	for(let i=0; i<H; i++)
 		for(let j=0; j<W; j++) {
