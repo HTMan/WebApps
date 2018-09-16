@@ -13,7 +13,9 @@ var arr, collision,
 	x: 0,
 	b_y: 0,
 	b_x: 0,
-	in_sector: false
+	in_sector: false,
+	need_upd: true,
+	target_block: 0
 };
 
 function init() {
@@ -44,7 +46,7 @@ function init() {
 		arr[i] = [W];
 		arr[i].fill(0);
 	}
-	document.addEventListener("mouseover", getCoords);
+	addEventListener("mouseover", detSector);
 	addEventListener("keydown", gameFrame);
 }
 
@@ -68,47 +70,55 @@ function randInt(min, max) {
     return rand;
 }
 
-function getCoords(e) {
+function detSector(e) {
 	if (e.target.className=="block") {
 		// if the last event processing was more than 50 msec ago
 		if (Date.now() - eventLastProcSelect > EVENT_PROC_DELAY) {
-			var id=[].indexOf.call(gameFi.children, e.target);
-			coords.y=Math.ceil((id+1)/9)-1;
-			coords.x=id%9;
-			//start coords of 3x3 block
-			coords.b_y=(Math.ceil((coords.y+1)/3)-1)*3;
-			coords.b_x=(Math.ceil((coords.x+1)/3)-1)*3;
+			coords.need_upd=true;
+			coords.target_block= e.target;
 			coords.in_sector = true;
 			eventLastProcSelect = Date.now();
 		}
 	} else coords.in_sector = false;
-	console.log("y:%d, x:%d, block_y:%d, block_x:%d, in sector: ",coords.y,coords.x, coords.b_y, coords.b_x, coords.in_sector);
+}
+
+function updCoords() {
+	coords.need_upd=false;
+	var id=[].indexOf.call(gameFi.children, coords.target_block);
+	coords.y=Math.ceil((id+1)/9)-1;
+	coords.x=id%9;
+	//start coords of 3x3 block
+	coords.b_y=(Math.ceil((coords.y+1)/3)-1)*3;
+	coords.b_x=(Math.ceil((coords.x+1)/3)-1)*3;
+	console.log("y:%d, x:%d, block_y:%d, block_x:%d",coords.y,coords.x, coords.b_y, coords.b_x);
 }
 
 function gameFrame(e) {
-	if (coords.in_sector) 
-		if (e.key>=0 && e.key<=9) {
-			arr[coords.y][coords.x]=e.key;
-			//console.log("pressed "+ e.key);
-			let cd, i, j;
-			for (i=0; i<H-3; i++) {
-				if (arr[i][coords.x]===arr[coords.y][coords.x]) {
-					cd = [i,coords.x];
-					collision.push(cd);
-				}
-				if (arr[coord.y][i]===arr[coords.y][coords.x]) {
-					cd = [coords.y, i];
-					collision.push(cd);
-				}
+	if (coords.in_sector && e.key>=0 && e.key<=9) {
+		if (coords.need_upd) updCoords();
+		arr[coords.y][coords.x]=e.key;
+		console.log("pressed "+ e.key);
+		/*
+		let cd, i, j;
+		for (i=0; i<H-3; i++) {
+			if (arr[i][coords.x]===arr[coords.y][coords.x]) {
+				cd = [i,coords.x];
+				collision.push(cd);
 			}
-			for (i=coord.b_y; i<coord.b_y+3; i++)
-				for (j=coord.b_x; j<coord.bx+3; j++)
-					if (arr[coord.y][coord.y]===arr[i][j]) {
-						cd = [i, j];
-						collision.push(cd);
-					}
-			//todo
+			if (arr[coord.y][i]===arr[coords.y][coords.x]) {
+				cd = [coords.y, i];
+				collision.push(cd);
+			}
 		}
+		for (i=coord.b_y; i<coord.b_y+3; i++)
+			for (j=coord.b_x; j<coord.bx+3; j++)
+				if (arr[coord.y][coord.y]===arr[i][j]) {
+					cd = [i, j];
+					collision.push(cd);
+				}
+		//todo
+	*/
+	}
 }
 
 //#FF7464
@@ -118,3 +128,4 @@ function gameFrame(e) {
 window.onload = function() {
 	init();
 }
+
