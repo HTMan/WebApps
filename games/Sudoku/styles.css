@@ -51,7 +51,7 @@ p {
      transition: opacity 1s;
 }
 
-.block {
+.game > div {
 	padding-top: 30%;
 	font-size: 40px;
 	border: 2px solid #DDDDDD;
@@ -59,9 +59,10 @@ p {
 	background-color: white;
 }
 
-.block:hover {
-	background-color: #DDDDDD;
-}
+.game > div:hover { background-color: #D4CCFA;}
+
+.brd-t { border-top: 5px solid #A0A0A0 !important; }
+.brd-l { border-left:5px solid #A0A0A0 !important; }
 
 @media screen and (orientation: landscape) and (max-height:900px) {
 	.points {
@@ -77,7 +78,7 @@ p {
 		width: 30rem;
 		min-height: 30rem;
 	}
-	.block {
+	.game > div {
 		padding-top:25%;
 		font-size:30px;
 	}

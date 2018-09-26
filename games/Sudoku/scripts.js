@@ -1,13 +1,15 @@
 ﻿const 
  H = 9,
  W = 9, 
- EVENT_PROC_DELAY = 50;
+ EVENT_PROC_DELAY = 100;
 
-var arr, collision,
+var arr, collision, 
+ count_filled_cells=0, 
+ max_arr_size=H*W,
  gameFi = document.getElementById("game"),
  pointsFi = document.getElementById("points"),
  eventLastProcSelect = 0,
- eventLastProcSet = 0,
+ eventLastProcCheck = 0,
  coords = {
 	y: 0,
 	x: 0,
@@ -20,7 +22,7 @@ var arr, collision,
 
 function init() {
 	//switch to another block
-	document.getElementById("loading").style.visibility = "hidden";
+	document.getElementById("loading").style.display = "none";
 	pointsFi.style.visibility = "visible";
 	gameFi.style.visibility = "visible";
 	gameFi.classList.add("transition");
@@ -28,19 +30,19 @@ function init() {
 	
 	//build grid with 16 blocks
 	var block = document.createElement("div");
-	block.className="block";
+	//block.className="block";
 	for( let i=0; i<H; i++ ) 
 		for( let j=0; j<W; j++ ) {
 		var clone=block.cloneNode();
 		gameFi.appendChild(clone);
 		if(!(i%3))
-			clone.style.borderTop= "5px solid #A0A0A0";
+			clone.classList.add("brd-t");
 		if(!(j%3))
-			clone.style.borderLeft= "5px solid #A0A0A0";
+			clone.classList.add("brd-l");
 	}
 	
 	//game init
-	collision = [];
+	collision = new Map();
 	arr = [H];
 	for( let i=0; i<H; i++ ) {
 		arr[i] = [W];
@@ -71,53 +73,48 @@ function randInt(min, max) {
 }
 
 function detSector(e) {
-	if (e.target.className=="block") {
-		// if the last event processing was more than 50 msec ago
-		if (Date.now() - eventLastProcSelect > EVENT_PROC_DELAY) {
-			coords.need_upd=true;
-			coords.target_block= e.target;
-			coords.in_sector = true;
-			eventLastProcSelect = Date.now();
-		}
-	} else coords.in_sector = false;
+	if (Date.now() - eventLastProcSelect > EVENT_PROC_DELAY) {
+		if (e.target.parentNode.id=="game") {
+			// if the last event processing was more than 50 msec ago
+				coords.need_upd=true;
+				coords.target_block= e.target;
+				coords.in_sector = true;
+		} else coords.in_sector = false;
+		eventLastProcSelect = Date.now();
+	}
 }
 
 function updCoords() {
 	coords.need_upd=false;
 	var id=[].indexOf.call(gameFi.children, coords.target_block);
-	coords.y=Math.ceil((id+1)/9)-1;
-	coords.x=id%9;
+	coords.y=Math.ceil((id+1)/H)-1;
+	coords.x=id%W;
 	//start coords of 3x3 block
 	coords.b_y=(Math.ceil((coords.y+1)/3)-1)*3;
 	coords.b_x=(Math.ceil((coords.x+1)/3)-1)*3;
 	console.log("y:%d, x:%d, block_y:%d, block_x:%d",coords.y,coords.x, coords.b_y, coords.b_x);
 }
 
+function gameFinish() {
+	
+}
+
 function gameFrame(e) {
-	if (coords.in_sector && e.key>=0 && e.key<=9) {
-		if (coords.need_upd) updCoords();
-		arr[coords.y][coords.x]=e.key;
-		console.log("pressed "+ e.key);
-		/*
-		let cd, i, j;
-		for (i=0; i<H-3; i++) {
-			if (arr[i][coords.x]===arr[coords.y][coords.x]) {
-				cd = [i,coords.x];
-				collision.push(cd);
+	if (Date.now() - eventLastProcCheck > EVENT_PROC_DELAY) {
+		if (coords.in_sector && e.key>=0 && e.key<=9) {
+			console.log("pressed "+ e.key);
+			if (coords.need_upd) updCoords();
+			if (e.key) {
+				
+			} 
+			else if (arr[coords.y][coords.x]) {
+				arr[coords.y][coords.x]=0;
+				count_filled_cells--;
 			}
-			if (arr[coord.y][i]===arr[coords.y][coords.x]) {
-				cd = [coords.y, i];
-				collision.push(cd);
-			}
+			if (count_filled_cells===max_arr_size && !collision.size) 
+				gameFinish();
 		}
-		for (i=coord.b_y; i<coord.b_y+3; i++)
-			for (j=coord.b_x; j<coord.bx+3; j++)
-				if (arr[coord.y][coord.y]===arr[i][j]) {
-					cd = [i, j];
-					collision.push(cd);
-				}
-		//todo
-	*/
+		eventLastProcCheck = Date.now();
 	}
 }
 
@@ -125,7 +122,4 @@ function gameFrame(e) {
 //#BECEFF
 
 //main func
-window.onload = function() {
-	init();
-}
-
+window.onload = init();

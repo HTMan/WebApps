@@ -9,7 +9,7 @@
     100% { background-position: -600px 600px }
 }
 
-#bckg{
+#bckg {
 	height: 340px;
 	width:100%;
 	background-image: url('bckg.png');
@@ -98,6 +98,12 @@ div > img {
 	background-color: white;
 	padding: 12px;
 	box-shadow: 0px -1px 3px #DDDDDD;
+}
+
+@media screen and (min-width: 3200px) {
+	#bckg {
+		animation: none;
+	}
 }
 
 @media screen and (max-width: 1200px) {
