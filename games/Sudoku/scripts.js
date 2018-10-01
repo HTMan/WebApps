@@ -9,7 +9,7 @@ var arr, collision,
  gameFi = document.getElementById("game"),
  pointsFi = document.getElementById("points"),
  eventLastProcSelect = 0,
- eventLastProcCheck = 0,
+ eventLastProcChange = 0,
  coords = {
 	y: 0,
 	x: 0,
@@ -49,7 +49,7 @@ function init() {
 		arr[i].fill(0);
 	}
 	addEventListener("mouseover", detSector);
-	addEventListener("keydown", gameFrame);
+	addEventListener("keydown", cellChange);
 }
 
 function drawArr() {
@@ -61,7 +61,7 @@ function drawArr() {
 				block.innerHTML=arr[i][j];
 				block.style.color=getColor(arr[i][j]);
 			}
-				else  block.innerHTML="<br>";
+			else  block.innerHTML="<br>";
 			block = block.nextElementSibling;
 		}
 }
@@ -79,7 +79,8 @@ function detSector(e) {
 				coords.need_upd=true;
 				coords.target_block= e.target;
 				coords.in_sector = true;
-		} else coords.in_sector = false;
+		} 
+		else coords.in_sector = false;
 		eventLastProcSelect = Date.now();
 	}
 }
@@ -95,26 +96,35 @@ function updCoords() {
 	console.log("y:%d, x:%d, block_y:%d, block_x:%d",coords.y,coords.x, coords.b_y, coords.b_x);
 }
 
-function gameFinish() {
-	
+function getCollisions(num) {
+	var i, j;
+	for (i=0; i<6; i++) {
+		if (arr[
+	}
 }
 
-function gameFrame(e) {
-	if (Date.now() - eventLastProcCheck > EVENT_PROC_DELAY) {
+function gameFinish() {
+	removeEventListener("keydown",cellChange);
+	gameFi.style.opacity = "0.5";
+	pointsFi.innerHTML=totalPoints+"<br>F5 - restart";
+}
+
+function cellChange(e) {
+	if (Date.now() - eventLastProcChange > EVENT_PROC_DELAY) {
 		if (coords.in_sector && e.key>=0 && e.key<=9) {
 			console.log("pressed "+ e.key);
 			if (coords.need_upd) updCoords();
 			if (e.key) {
-				
+				getCollisions(e.key);
 			} 
-			else if (arr[coords.y][coords.x]) {
+			else if (arr[coords.y][coords.x]) { //clear cell by 0
 				arr[coords.y][coords.x]=0;
 				count_filled_cells--;
 			}
-			if (count_filled_cells===max_arr_size && !collision.size) 
+			if (count_filled_cells===max_arr_size && !collision.size) //all cells has been filled and there are no collisions
 				gameFinish();
 		}
-		eventLastProcCheck = Date.now();
+		eventLastProcChange = Date.now();
 	}
 }
 

@@ -71,18 +71,18 @@ function drawArr() {
 				block.innerHTML=arr[i][j];
 				block.style.color=getColor(arr[i][j]);
 			}
-				else  block.innerHTML="<br>";
+			else  block.innerHTML="<br>";
 			block = block.nextElementSibling;
 		}
 	pointsFi.innerHTML=totalPoints+"<br><br>";
 }
-
+//101
 function randInt(min, max) {
     var rand = min - 0.5 + Math.random() * (max - min + 1);
     rand = Math.round(rand);
     return rand;
 }
-
+//113
 function randSpawn() {
 	var i, j, num=0;
 
@@ -91,7 +91,7 @@ function randSpawn() {
 		j=randInt(0,W-1);
 			if(!arr[i][j]) {
 				if ( randInt(0,1) ) num=2; 
-					else num=4;
+				else num=4;
 				arr[i][j]=num;
 			}
 	} while(!num);
@@ -107,9 +107,9 @@ function checkArr() {
 			if (!arr[i][j]) {
 				fullArr=0;
 				return 0;
-			} else 
-			if ((j<W-1 && arr[i][j]===arr[i][j+1]) || (i<H-1 && arr[i][j]===arr[i+1][j]) ) 
-				collCounts=true;
+			} 
+			else if ((j<W-1 && arr[i][j]===arr[i][j+1]) || (i<H-1 && arr[i][j]===arr[i+1][j]) ) 
+					collCounts=true;
 	if (collCounts)
 	return 0;
 	else return 1;
